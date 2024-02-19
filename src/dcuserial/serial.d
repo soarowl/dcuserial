@@ -723,7 +723,7 @@ void deserializeMembers(EndianType endianness, L, EndianType le, C)(Buffer __buf
         0, 0, 0, 2, 1, 2, 0, 2, 0, 3, 0, 4, 0, 0, 0, 5, 0, 0, 0, 6
     ]);
     assert(deserialize!(Test2, Endian.bigEndian, uint)([
-            0, 0, 0, 2, 1, 2, 0, 2, 0, 3, 0, 4, 0, 0, 0, 5, 0, 0, 0, 6, 1
+        0, 0, 0, 2, 1, 2, 0, 2, 0, 3, 0, 4, 0, 0, 0, 5, 0, 0, 0, 6, 1
     ]) == test2);
 
     struct Test3
