@@ -683,7 +683,6 @@ void deserializeMembers(EndianType endianness, L, EndianType le, C)(Buffer __buf
 
 @("attributes") unittest
 {
-
     struct Test1
     {
 
@@ -762,11 +761,27 @@ void deserializeMembers(EndianType endianness, L, EndianType le, C)(Buffer __buf
     assert(test5.serialize() == [1, 1, 2, 0, 0, 0, 1, 2, 0, 0, 0, 3, 4, 0, 0, 0]);
     assert(deserialize!Test5([1, 1, 2, 0, 0, 0, 1, 2, 0, 0, 0, 3, 4, 0, 0, 0]) == test5);
 
+    struct Test6
+    {
+        ubyte tag = 02;
+        @Condition("__buffer.compiler >= 8")
+        @Length!ubyte string name;
+    }
+
+    Test6 test6 = Test6(2, "test");
+    Buffer buffer = new Buffer(20);
+    buffer.compiler = 7;
+    test6.serialize(buffer);
+    assert(buffer.data!ubyte == [2]);
+
+    buffer.reset();
+    buffer.compiler = 8;
+    test6.serialize(buffer);
+    assert(buffer.data!ubyte == [2, 4, 't', 'e', 's', 't']);
 }
 
 @("using buffer") unittest
 {
-
     Buffer buffer = new Buffer(64);
 
     serialize(ubyte(55), buffer);
@@ -775,5 +790,4 @@ void deserializeMembers(EndianType endianness, L, EndianType le, C)(Buffer __buf
 
     assert(deserialize!ubyte(buffer) == 55);
     assert(buffer.data.length == 0);
-
 }
