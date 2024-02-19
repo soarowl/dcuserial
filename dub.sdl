@@ -1,0 +1,6 @@
+name "dcuserial"
+description "Binary serialization library"
+authors "Kripth"
+license "MIT"
+targetType "library"
+dependency "dcubuffer" version="~main"
