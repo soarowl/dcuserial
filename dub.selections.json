@@ -1,6 +1,6 @@
 {
 	"fileVersion": 1,
 	"versions": {
-		"dcubuffer": "~main"
+		"dcubuffer": {"version":"b041ac5887482fbcff17deda3f37d7142b17be28","repository":"git+git@github.com:soarowl/dcubuffer.git"}
 	}
 }
