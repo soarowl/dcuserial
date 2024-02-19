@@ -290,14 +290,15 @@ void serializeMembers(EndianType endianness, L, EndianType le, T)(Buffer __buffe
 
         mixin("alias M = typeof(__container." ~ member ~ ");");
 
-        static foreach (uda; __traits(getAttributes, __traits(getMember, T, member)))
-        {
-            static if (is(uda : Custom!C, C))
-            {
-                enum __custom = true;
-                uda.C.serialize(mixin("__container." ~ member), __buffer);
+        static foreach (t; __traits(getOverloads, T, member))
+            static foreach (uda; __traits(getAttributes, t))
+                {
+                static if (is(uda : Custom!C, C))
+                    {
+                    enum __custom = true;
+                    uda.C.serialize(mixin("__container." ~ member), __buffer);
+                }
             }
-        }
 
         static if (!is(typeof(__custom)))
             mixin({
@@ -499,14 +500,15 @@ void deserializeMembers(EndianType endianness, L, EndianType le, C)(Buffer __buf
 
         mixin("alias M = typeof(__container." ~ member ~ ");");
 
-        static foreach (uda; __traits(getAttributes, __traits(getMember, T, member)))
-        {
-            static if (is(uda : Custom!C, C))
-            {
-                enum __custom = true;
-                mixin("__container." ~ member) = uda.C.deserialize(__buffer);
+        static foreach (t; __traits(getOverloads, T, member))
+            static foreach (uda; __traits(getAttributes, t))
+                {
+                static if (is(uda : Custom!C, C))
+                    {
+                    enum __custom = true;
+                    mixin("__container." ~ member) = uda.C.deserialize(__buffer);
+                }
             }
-        }
 
         static if (!is(typeof(__custom)))
             mixin({
