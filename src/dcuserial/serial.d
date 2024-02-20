@@ -12,6 +12,47 @@ import dcubuffer.varint : isVar;
 
 import dcuserial.attribute;
 
+enum Compiler : ubyte
+{
+    Delphi6 = 14,
+    Delphi7 = 15,
+    Delphi8 = 16,
+    Delphi2005 = 17,
+    Delphi2006 = 18,
+    Delphi2007 = 19,
+    Delphi2009 = 20,
+    Delphi2010 = 21,
+    DelphiXE = 22,
+    DelphiXE2 = 23,
+    DelphiXE3 = 24,
+    DelphiXE4 = 25,
+    DelphiXE5 = 26,
+    DelphiXE6 = 27,
+    DelphiXE7 = 28,
+    DelphiXE8 = 29,
+    Delphi10 = 30,
+    Delphi10Berlin = 31,
+    Delphi10Tokyo = 32,
+    Delphi10Rio = 33,
+    Delphi10Sydney = 34,
+    Delphi11 = 35,
+    Delphi12 = 36
+}
+
+enum Platform : ubyte
+{
+    Win32_00 = 0,
+    Win32_03 = 3,
+    OSX32_04 = 4,
+    iOSSimulator32_14 = 0x14,
+    Win64_23 = 0x23,
+    Android32_67 = 0x67,
+    iOSDevice32_76 = 0x76,
+    Android32_77 = 0x77,
+    Android64_87 = 0x87,
+    iOSDevice64_94 = 0x94
+}
+
 /**
  * Serializes some data.
  */
@@ -764,18 +805,18 @@ void deserializeMembers(EndianType endianness, L, EndianType le, C)(Buffer __buf
     struct Test6
     {
         ubyte tag = 02;
-        @Condition("__buffer.compiler >= 8")
+        @Condition("__buffer.compiler >= Compiler.Delphi7")
         @Length!ubyte string name;
     }
 
     Test6 test6 = Test6(2, "test");
     Buffer buffer = new Buffer(20);
-    buffer.compiler = 7;
+    buffer.compiler = Compiler.Delphi6;
     test6.serialize(buffer);
     assert(buffer.data!ubyte == [2]);
 
     buffer.reset();
-    buffer.compiler = 8;
+    buffer.compiler = Compiler.Delphi7;
     test6.serialize(buffer);
     assert(buffer.data!ubyte == [2, 4, 't', 'e', 's', 't']);
 }
